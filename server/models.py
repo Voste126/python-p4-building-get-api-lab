@@ -10,11 +10,23 @@ db = SQLAlchemy(metadata=metadata)
 
 class Bakery(db.Model, SerializerMixin):
     __tablename__ = 'bakeries'
+    serialize_rules = ('-baked_goods.bakery',)
 
     id = db.Column(db.Integer, primary_key=True)
+    name= db.Column(db.String(255))
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
+    baked_goods = db.relationship('BakedGood', backref='bakery', lazy=True)
 
 class BakedGood(db.Model, SerializerMixin):
     __tablename__ = 'baked_goods'
 
     id = db.Column(db.Integer, primary_key=True)
+    name= db.Column(db.String(255))
+    price = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
+    bakery_id = db.Column(db.Integer, db.ForeignKey('bakeries.id'))
+
+
     
